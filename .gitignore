@@ -1,0 +1,5 @@
+outputs/
+*.pyc
+*.avi
+*.mp4
+__pycache__/
