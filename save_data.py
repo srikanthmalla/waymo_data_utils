@@ -6,9 +6,9 @@ from utils import *
 import glob
 import tensorflow.compat.v1 as tf
 from joblib import Parallel, delayed
+from progressbar import ProgressBar
 import multiprocessing
 tf.enable_eager_execution()
-from progressbar import ProgressBar
 ## hyperparams
 output_folder = "/home/smalla/waymo_data/outputs/"
 # input_folder = "/home/smalla/waymo_data/v_1_2/Training/tfrecords/"
@@ -43,7 +43,7 @@ def process(file):
 		create_dir(out_file1)
 		out_file = out_file1+"/"+str(indx).zfill(6)+".png"
 		if not os.path.isfile(out_file):
-		  lidar_top_view(frame, range_images, camera_projections, range_image_top_pose, out_file, save=True)
+			lidar_top_view(frame, range_images, camera_projections, range_image_top_pose, out_file, save=True)
 
 		# # 3.pointclouds
 		out_file1 = outfolder+"/pointclouds"
@@ -60,14 +60,14 @@ def process(file):
 		create_dir(out_file1)
 		out_file = out_file1+"/"+str(indx).zfill(6)+".npy"
 		if not os.path.isfile(out_file):
-		  labels_pc(frame, range_images, camera_projections, range_image_top_pose, out_file, indx, save=True)
+			labels_pc(frame, range_images, camera_projections, range_image_top_pose, out_file, indx, save=True)
 
 		#6. ego motion
 		out_file1 = outfolder+"/ego_motion"
 		create_dir(out_file1)
 		out_file = out_file1+"/"+str(indx).zfill(6)+".npy"
 		if not os.path.isfile(out_file):
-		  ego_motion(frame, out_file, save=True)
+			ego_motion(frame, out_file, save=True)
 
 
 	print(file)
@@ -78,10 +78,14 @@ if __name__ == '__main__':
 	parallel= False
 
 	files.sort()
+	#remove this line
+	files = files[int(2*len(files)/3):len(files)]
+
 	# batch = files[0:int(len(files)/3)]
 	# batch = files[int(len(files)/3):int(2*len(files)/3)]
-	# batch = files[int(2*len(files)/3):len(files)]
-	batch = files
+	batch = files[int(2*len(files)/3):len(files)]
+
+	# batch = files
 
 	## sequential
 	if not parallel:
