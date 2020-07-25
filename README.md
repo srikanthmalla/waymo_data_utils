@@ -7,5 +7,9 @@ save_data.py: save images and lidar data
 ``
 
 ``
-create_video.py: creates video using the raw sensor data
+visualization.py: creates merged data with labels
+``
+
+``
+create_video.py: creates video using images created by visualization
 ``
