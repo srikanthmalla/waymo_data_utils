@@ -73,7 +73,7 @@ def draw_labels_on_img(top_img, labels_tag, global_track_ids, cam_image, colors)
 	for ind2, track_id in enumerate(track_ids):
 		if track_id not in global_track_ids:
 			global_track_ids.append(track_id)
-		ind = global_track_ids.index(track_id)
+		ind = global_track_ids.index(track_id)%100
 		bb = [cx[ind2], cy[ind2], l[ind2], w[ind2]]
 		color = tuple([int(colors[ind,2]*255), int(colors[ind,1]*255), int(colors[ind,0]*255)])
 		cam_image = draw_box(bb, cam_image, color)
@@ -239,7 +239,7 @@ def main(scene):
 		for ind2, track_id in enumerate(track_ids):
 			if track_id not in global_track_ids:
 				global_track_ids.append(track_id)
-			ind = global_track_ids.index(track_id)
+			ind = global_track_ids.index(track_id)%100
 			bb = [cx[ind2], cy[ind2], l[ind2], w[ind2], yaw[ind2]]
 			top_view(bb,tuple(colors[ind,:]), ax)
 
