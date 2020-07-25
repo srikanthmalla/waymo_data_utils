@@ -120,27 +120,6 @@ def main(scene):
 				lin_speed = np.linalg.norm(lin_speed) # scalar
 				prev_ego_motion = ego_motion
 
-		# lidar labels
-		lidar_labels_file = top_img.replace("lidar_top","labels_pc")
-		lidar_labels_file = lidar_labels_file.replace("png","npy")
-		# print(lidar_labels_file)
-		if path.isfile(lidar_labels_file):
-			# [label.type, label.id, label.box.center_x, label.box.center_y, label.box.center_z, label.box.length, label.box.width, label.box.height, label.box.heading, label.metadata.speed_x, label.metadata.speed_y, label.metadata.accel_x, label.metadata.accel_y]
-			lidar_labels = np.load(lidar_labels_file)
-			lidar_labels = np.array(lidar_labels)
-			scale = 1080/120 # scale with 1080/120, pixels/m and offset to center
-			label = lidar_labels[:,0]
-			track_ids = lidar_labels[:,1]
-			# print("lidar: ",track_ids)
-			cx = np.array(lidar_labels[:,2]).astype(float)*scale+(1080/2)
-			cy = -np.array(lidar_labels[:,3]).astype(float)*scale+(1080/2)
-			# cz = np.array(lidar_labels[:,4]).astype(float)*scale+(1080/2)
-			l = np.array(lidar_labels[:,5]).astype(float)*scale
-			w = np.array(lidar_labels[:,6]).astype(float)*scale
-			# h = lidar_labels[:,7]*scale
-			yaw = np.array(lidar_labels[:,8]).astype(float)
-			# print(cx)
-
 		img_resize_w = int(width/3)
 		img_resize_h = int(height/4)
 
@@ -236,15 +215,37 @@ def main(scene):
 		merged = cv2.cvtColor(merged, cv2.COLOR_BGR2RGB)
 
 		ax.imshow(merged)
-		for ind2, track_id in enumerate(track_ids):
-			if track_id not in global_track_ids:
-				global_track_ids.append(track_id)
-			ind = global_track_ids.index(track_id)%100
-			bb = [cx[ind2], cy[ind2], l[ind2], w[ind2], yaw[ind2]]
-			top_view(bb,tuple(colors[ind,:]), ax)
+		# lidar labels
+		lidar_labels_file = top_img.replace("lidar_top","labels_pc")
+		lidar_labels_file = lidar_labels_file.replace("png","npy")
+		# print(lidar_labels_file)
+		if path.isfile(lidar_labels_file):
+			# [label.type, label.id, label.box.center_x, label.box.center_y, label.box.center_z, label.box.length, label.box.width, label.box.height, label.box.heading, label.metadata.speed_x, label.metadata.speed_y, label.metadata.accel_x, label.metadata.accel_y]
+			lidar_labels = np.load(lidar_labels_file)
+			lidar_labels = np.array(lidar_labels)
+			scale = 1080/120 # scale with 1080/120, pixels/m and offset to center
+			if lidar_labels.size ==0:
+				return cam_image
+			label = lidar_labels[:,0]
+			track_ids = lidar_labels[:,1]
+			# print("lidar: ",track_ids)
+			cx = np.array(lidar_labels[:,2]).astype(float)*scale+(1080/2)
+			cy = -np.array(lidar_labels[:,3]).astype(float)*scale+(1080/2)
+			# cz = np.array(lidar_labels[:,4]).astype(float)*scale+(1080/2)
+			l = np.array(lidar_labels[:,5]).astype(float)*scale
+			w = np.array(lidar_labels[:,6]).astype(float)*scale
+			# h = lidar_labels[:,7]*scale
+			yaw = np.array(lidar_labels[:,8]).astype(float)
 
-		ax.quiver(cx, cy, 20*np.cos(yaw), 20*np.sin(yaw), units='xy' ,scale=1)
-		ax.plot(cx, cy, 'ro', markersize=3)
+			for ind2, track_id in enumerate(track_ids):
+				if track_id not in global_track_ids:
+					global_track_ids.append(track_id)
+				ind = global_track_ids.index(track_id)%100
+				bb = [cx[ind2], cy[ind2], l[ind2], w[ind2], yaw[ind2]]
+				top_view(bb,tuple(colors[ind,:]), ax)
+
+			ax.quiver(cx, cy, 20*np.cos(yaw), 20*np.sin(yaw), units='xy' ,scale=1)
+			ax.plot(cx, cy, 'ro', markersize=3)
 
 		ax.set_xlim(0,1080)
 		ax.set_ylim(1080,0)
