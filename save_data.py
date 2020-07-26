@@ -1,5 +1,6 @@
 # Author: Srikanth Malla
-# Data 11 July 2020
+# Date: 11 July 2020
+# extract the sensor data from tf records and save in folders
 
 import os
 from utils import *

@@ -1,6 +1,6 @@
 # original:
 # Modified: Srikanth Malla
-# Data 11 July 2020
+# Date: 11 July 2020
 # ----
 # details:
 # 7 functions
