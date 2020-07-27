@@ -1,5 +1,7 @@
 # scripts for waymo dataset
 
+output video: https://www.youtube.com/watch?v=YjOUamkRBRo
+
 ## prerequisites:
 
 1. download and extract v_1_2 of waymo (with labels)
