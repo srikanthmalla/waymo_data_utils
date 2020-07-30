@@ -56,7 +56,7 @@ def draw_box(bb, img, color):
 
 def draw_labels_on_img(top_img, labels_tag, global_track_ids, cam_image, colors):
 	labels_file = top_img.replace("lidar_top",labels_tag)
-	labels_file = labels_file.replace("png","txt.npy")
+	labels_file = labels_file.replace("png","npy")
 	if path.isfile(labels_file):
 		# label.type, label.id, label.box.center_x, label.box.center_y, label.box.length, label.box.width
 		cam_labels = np.load(labels_file)
@@ -87,7 +87,7 @@ def get_img(cam_tag, top_img, global_track_ids, colors):
 		cam_img = cv2.imread(top_img.replace("lidar_top",cam_tag))
 		cam_img = cv2.cvtColor(cam_img, cv2.COLOR_BGR2RGB) # for plotting with matplotlib
 
-	cam_img = draw_labels_on_img(top_img, "labels_"+cam_tag, global_track_ids, cam_img, colors)
+	cam_img = draw_labels_on_img(top_img, "proj_labels_"+cam_tag, global_track_ids, cam_img, colors)
 	cam_img = cv2.resize(cam_img, (img_resize_w, img_resize_h))
 	return cam_img
 
@@ -99,7 +99,7 @@ def main(scene):
 	colors = np.random.rand(100, 3)
 
 	lidar_top_images = glob.glob(scene+"/lidar_top/*.png")
-	create_dir(scene+"/merged_image")
+	create_dir(scene+"/merged_image2")
 	lidar_top_images.sort()
 	local_counter = 0
 	camera_labels = False
@@ -287,7 +287,7 @@ def main(scene):
 		fig.subplots_adjust(top = 1)
 		fig.subplots_adjust(right = 1)
 		fig.subplots_adjust(left = 0)
-		fig.savefig(top_img.replace("lidar_top","merged_image"))
+		fig.savefig(top_img.replace("lidar_top","merged_image2"))
 		# plt.show()
 
 
