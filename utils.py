@@ -4,6 +4,7 @@
 # ----
 # details:
 # 7 functions
+# lidar_labels_on_cam (projected_lidar_labels, for the purpose of track ID association)
 # ego_motion (ego car motion)
 # labels_pc (pointcloud 3d box labels)
 # labels_camera (camera labels for each camera)
@@ -33,10 +34,32 @@ def create_dir(folder):
 	if not os.path.exists(folder):
 		os.mkdir(folder)
 
+
+##### Projected lidar labels #####
+def lidar_labels_on_cam(frame, out_folder, indx, save=False):
+	def extract_labels(camera_image, camera_labels, out_file, cam_name):
+		labels = []
+		for c_labels in camera_labels:
+			if c_labels.name != camera_image.name:
+				continue
+			for label in c_labels.labels:
+				labels.append([label.type, str(label.id).replace("_"+cam_name,""), label.box.center_x, label.box.center_y, label.box.length, label.box.width])
+		np.save(out_file, labels)
+	for index, image in enumerate(frame.images):
+		# print(index)
+		cam_name = str(open_dataset.CameraName.Name.Name(image.name))
+		out_file1 = out_folder+"/proj_labels_"+cam_name
+		create_dir(out_file1)
+		out_file = out_file1+"/"+str(indx).zfill(6)+".npy"
+		if not os.path.isfile(out_file):
+			extract_labels(image, frame.projected_lidar_labels, out_file, cam_name)
+
+
 ##### ego-motion ####
 def ego_motion(frame, out_file, save=True):
 	frame_pose = np.reshape(np.array(frame.pose.transform), [4, 4])
-	np.save(out_file, frame_pose)
+	if save:
+		np.save(out_file, frame_pose)
 
 
 ##### laser labels ###
@@ -44,9 +67,9 @@ def labels_pc(frame, range_images, camera_projections, range_image_top_pose, out
 	def extract_labels(laser_labels, out_file):
 		labels = []
 		for label in laser_labels:
-			# print(label, label.type)
+			print(label, label.id)
 			labels.append([label.type, label.id, label.box.center_x, label.box.center_y, label.box.center_z, label.box.length, label.box.width, label.box.height, label.box.heading, label.metadata.speed_x, label.metadata.speed_y, label.metadata.accel_x, label.metadata.accel_y])
-		np.save(out_file, labels)
+		# np.save(out_file, labels)
 
 	extract_labels(frame.laser_labels, out_file)
 
@@ -67,9 +90,9 @@ def labels_camera(frame, range_images, camera_projections, range_image_top_pose,
 		# print(index)
 		out_file1 = out_folder+"/labels_"+str(open_dataset.CameraName.Name.Name(image.name))
 		create_dir(out_file1)
-		out_file = out_file1+"/"+str(indx).zfill(6)+".txt"
+		out_file = out_file1+"/"+str(indx).zfill(6)+".npy"
 		if not os.path.isfile(out_file):
-		  extract_labels(image, frame.camera_labels, out_file)
+			extract_labels(image, frame.camera_labels, out_file)
 
 ####### visualize camera images ######
 def visualize_cameras(frame, range_images, camera_projections, range_image_top_pose, out_folder, indx, show=False, save=False):
