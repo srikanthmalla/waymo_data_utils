@@ -12,7 +12,7 @@ if __name__ == '__main__':
   base_input="/home/smalla/waymo_data/outputs/"
   output_path="/home/smalla/waymo_ws/merged_video.avi"
   scenes=glob.glob(base_input+"*")
-  all_imgs_len = len(glob.glob(base_input+"*/merged_image/*.png"))
+  all_imgs_len = len(glob.glob(base_input+"*/merged_image2/*.png"))
   scenes.sort()
   fourcc = cv2.VideoWriter_fourcc(*'MPEG')  # 'x264' doesn't work
   # img_c=cv2.imread(images_list[0])

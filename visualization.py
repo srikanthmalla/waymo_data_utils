@@ -110,6 +110,9 @@ def main(scene):
 
 	global_track_ids = []
 	for top_img in lidar_top_images:
+		out_img = top_img.replace("lidar_top","merged_image2")
+		if os.path.isfile(out_img):
+			continue
 		# fig init
 		fig = plt.figure(frameon=False)
 		DPI = fig.get_dpi()
@@ -287,7 +290,7 @@ def main(scene):
 		fig.subplots_adjust(top = 1)
 		fig.subplots_adjust(right = 1)
 		fig.subplots_adjust(left = 0)
-		fig.savefig(top_img.replace("lidar_top","merged_image2"))
+		fig.savefig(out_img)
 		# plt.show()
 
 
