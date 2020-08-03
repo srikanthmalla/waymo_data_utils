@@ -21,7 +21,7 @@ if __name__ == '__main__':
   counter=0
 
   for scene_count, scene in enumerate(scenes):
-    images_list = glob.glob(scene+"/merged_image/*.png")
+    images_list = glob.glob(scene+"/merged_image2/*.png")
     images_list.sort()
     print("completed: ", counter,"/",all_imgs_len," = ",round(float(counter/all_imgs_len)*100,2),"%")
     for img in images_list:

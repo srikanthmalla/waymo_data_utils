@@ -75,7 +75,7 @@ def draw_labels_on_img(top_img, labels_tag, global_track_ids, cam_image, colors)
 			global_track_ids.append(track_id)
 		ind = global_track_ids.index(track_id)%100
 		bb = [cx[ind2], cy[ind2], l[ind2], w[ind2]]
-		color = tuple([int(colors[ind,2]*255), int(colors[ind,1]*255), int(colors[ind,0]*255)])
+		color = tuple([int(colors[ind,0]*255), int(colors[ind,1]*255), int(colors[ind,2]*255)])
 		cam_image = draw_box(bb, cam_image, color)
 	return cam_image
 
@@ -111,8 +111,10 @@ def main(scene):
 	global_track_ids = []
 	for top_img in lidar_top_images:
 		out_img = top_img.replace("lidar_top","merged_image2")
-		if os.path.isfile(out_img):
-			continue
+		# if os.path.isfile(out_img):
+		# 	continue
+		# if "segment-10017090168044687777_6380_000_6400_000_with_camera_labels" not in out_img:
+		# 	continue
 		# fig init
 		fig = plt.figure(frameon=False)
 		DPI = fig.get_dpi()
