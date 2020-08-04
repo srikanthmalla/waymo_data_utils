@@ -1,6 +1,7 @@
 # scripts for waymo dataset
 
-output video: https://www.youtube.com/watch?v=YjOUamkRBRo
+output video [with annotated labels]: https://www.youtube.com/watch?v=YjOUamkRBRo
+output video [with lidar projected labels]: https://www.youtube.com/watch?v=ekizQEwPqew
 
 ## prerequisites:
 
