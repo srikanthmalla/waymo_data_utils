@@ -7,8 +7,8 @@ from utils import *
 import glob
 import tensorflow.compat.v1 as tf
 from joblib import Parallel, delayed
-from progressbar import ProgressBar
 import multiprocessing
+from progressbar import ProgressBar
 tf.enable_eager_execution()
 ## hyperparams
 output_folder = "/home/smalla/waymo_data/outputs/"
@@ -19,11 +19,11 @@ files = glob.glob(input_folder+"*.tfrecord")
 
 camera_images = False
 pointclouds = False
-top_view_lidar_image = False
+top_view_lidar_image = True
 camera_labels = False
 lidar_labels = False
 ego_vehicle_motion = False
-projected_lidar_labels = True
+projected_lidar_labels = False
 
 def create_dir(folder):
 	if not os.path.exists(folder):

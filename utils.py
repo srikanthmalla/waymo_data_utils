@@ -292,27 +292,28 @@ def lidar_top_view(frame, range_images, camera_projections, range_image_top_pose
 	DPI = fig.get_dpi()
 	fig.set_size_inches(1080.0/float(DPI),1080.0/float(DPI))
 	ax = fig.add_subplot(111, xticks=[], yticks=[])
-	# height map
-	# ax.scatter(x = lidar_points[:,0], y=lidar_points[:,1], s = 0.01, c=lidar_points[:,2], cmap='gray')
-
-	# # intensity map
-	# ax.scatter(x = lidar_points[:,0], y=lidar_points[:,1], s = 0.01, c=lidar_points[:,3], cmap='YlOrRd')
-
-	# combined height and intensity map
 	height = lidar_points[:,2]
-	height = np.interp(height, (height.min(), height.max()), (0, 1))
-	# height = np.clip(height, 0, 1)
-
-	height = np.expand_dims(height, axis=1)
 	intensity = lidar_points[:,3]
-	intensity = np.expand_dims(intensity, axis=1)
-	zeros = np.zeros_like(height)
-	# ones = np.ones_like(height)
-	colors = np.hstack((zeros, height, intensity))
-	# print(np.min(height), np.max(intensity))
-	# print(np.shape(colors), lidar_points[:,0].shape, lidar_points[:,1].shape)
-	ax.scatter(x = lidar_points[:,0], y=lidar_points[:,1], s = 0.01, c=colors)
 
+
+	######## style 1: combined height and intensity map ########
+	# height = np.interp(height, (height.min(), height.max()), (0, 1))
+	# # height = np.clip(height, 0, 1)
+	# height = np.expand_dims(height, axis=1)
+	# intensity = np.expand_dims(intensity, axis=1)
+	# zeros = np.zeros_like(height)
+	# colors = np.hstack((zeros, height, intensity))
+	# ax.scatter(x = lidar_points[:,0], y=lidar_points[:,1], s = 0.01, c=colors)
+
+	######## style 2: using height to visuzalize ground and obstacles (precog paper style) ########
+	gray = [153/255, 153/255, 153/255]
+	red = [228/255, 27/255, 28/255]
+	ground_points = lidar_points[height<0.7,:] #meters threshold
+	non_ground_points = lidar_points[height>0.7,:] #meters threshold
+	ax.scatter(x = ground_points[:,0], y=ground_points[:,1], s = 0.01, c=np.tile(gray,(ground_points.shape[0],1)))
+	ax.scatter(x = non_ground_points[:,0], y=non_ground_points[:,1], s = 0.01, c=np.tile(red,(non_ground_points.shape[0],1)))
+
+	### plot adjustments
 	ax.set_xlim(-60,60)
 	ax.set_ylim(-60,60)
 	ax.axis('off')

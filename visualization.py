@@ -111,11 +111,6 @@ def main(scene):
 	global_track_ids = []
 	for top_img in lidar_top_images:
 		out_img = top_img.replace("lidar_top","merged_image2")
-		# if os.path.isfile(out_img):
-		# 	continue
-		# if "segment-10017090168044687777_6380_000_6400_000_with_camera_labels" not in out_img:
-		# 	continue
-		# fig init
 		fig = plt.figure(frameon=False)
 		DPI = fig.get_dpi()
 		fig.set_size_inches(1080.0/float(DPI),1080.0/float(DPI))
@@ -141,50 +136,18 @@ def main(scene):
 
 		# front left image
 		cam_front_left_image = get_img("FRONT_LEFT", top_img, global_track_ids, colors)
-		# if path.isfile(top_img.replace("lidar_top","FRONT_LEFT")):
-		# 	cam_front_left_image = cv2.imread(top_img.replace("lidar_top","FRONT_LEFT"))
-		# cam_front_left_image = draw_labels_on_img(top_img, "labels_FRONT_LEFT", global_track_ids, cam_front_left_image, colors)
-		# cam_front_left_image = cv2.resize(cam_front_left_image, (img_resize_w, img_resize_h))
-		# x_offset=0; y_offset=0;
-		# merged[y_offset:y_offset+cam_front_left_image.shape[0], x_offset:x_offset+cam_front_left_image.shape[1]] = cam_front_left_image
 
 		# front image
 		cam_front_image = get_img("FRONT", top_img, global_track_ids, colors)
-		# if path.isfile(top_img.replace("lidar_top","FRONT")):
-		# 	cam_front_image = cv2.imread(top_img.replace("lidar_top","FRONT"))
-		# cam_front_image = draw_labels_on_img(top_img, "labels_FRONT", global_track_ids, cam_front_image, colors)
-		# cam_front_image = cv2.resize(cam_front_image, (img_resize_w, img_resize_h))
-		# x_offset=int(width/3); y_offset=0;
-		# merged[y_offset:y_offset+cam_front_image.shape[0], x_offset:x_offset+cam_front_image.shape[1]] = cam_front_image
 
 		#front right
 		cam_front_right_image = get_img("FRONT_RIGHT", top_img, global_track_ids, colors)
-		# if path.isfile(top_img.replace("lidar_top","FRONT_RIGHT")):
-		# 	cam_front_right_image = cv2.imread(top_img.replace("lidar_top","FRONT_RIGHT"))
-		# cam_front_right_image = draw_labels_on_img(top_img, "labels_FRONT_RIGHT", global_track_ids, cam_front_right_image, colors)
-		# cam_front_right_image = cv2.resize(cam_front_right_image, (img_resize_w, img_resize_h))
-		# x_offset=int(2*width/3); y_offset=0;
-		# merged[y_offset:y_offset+cam_front_right_image.shape[0], x_offset:x_offset+cam_front_right_image.shape[1]] = cam_front_right_image
-
 
 		# side left
 		cam_side_left_image = get_img("SIDE_LEFT", top_img, global_track_ids, colors)
 
-		# if path.isfile(top_img.replace("lidar_top","SIDE_LEFT")):
-		# 	cam_side_left_image = cv2.imread(top_img.replace("lidar_top","SIDE_LEFT"))
-		# cam_side_left_image = draw_labels_on_img(top_img, "labels_SIDE_LEFT", global_track_ids, cam_side_left_image, colors)
-		# cam_side_left_image = cv2.resize(cam_side_left_image, (img_resize_w, img_resize_h))
-		# x_offset=0; y_offset=int(3*height/4);
-		# merged[y_offset:y_offset+cam_side_left_image.shape[0], x_offset:x_offset+cam_side_left_image.shape[1]] = cam_side_left_image
-
 		# side right
 		cam_side_right_image = get_img("SIDE_RIGHT", top_img, global_track_ids, colors)
-		# if path.isfile(top_img.replace("lidar_top","SIDE_RIGHT")):
-		# 	cam_side_right_image = cv2.imread(top_img.replace("lidar_top","SIDE_RIGHT"))
-		# cam_side_right_image = draw_labels_on_img(top_img, "labels_SIDE_RIGHT", global_track_ids, cam_side_right_image, colors)
-		# cam_side_right_image = cv2.resize(cam_side_right_image, (img_resize_w, img_resize_h))
-		# x_offset=int(2*width/3); y_offset=int(3*height/4);
-		# merged[y_offset:y_offset+cam_side_right_image.shape[0], x_offset:x_offset+cam_side_right_image.shape[1]] = cam_side_right_image
 
 		file = scene.split("/")[-1]
 		file = file.replace("segment-","")
